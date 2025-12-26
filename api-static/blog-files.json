@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "file": "building-scalable-apis copy.md",
+      "category": "general"
+    },
+    {
+      "file": "non-tech/career-growth-tips.md",
+      "category": "non-tech"
+    },
+    {
+      "file": "non-tech/remote-work-productivity.md",
+      "category": "non-tech"
+    },
+    {
+      "file": "non-tech/work-life-balance.md",
+      "category": "non-tech"
+    },
+    {
+      "file": "tech/building-scalable-apis.md",
+      "category": "tech"
+    },
+    {
+      "file": "tech/getting-started-with-web-development.md",
+      "category": "tech"
+    },
+    {
+      "file": "tech/understanding-async-javascript.md",
+      "category": "tech"
+    }
+  ],
+  "count": 7,
+  "generated": "2025-12-26T05:23:53.734Z"
+}

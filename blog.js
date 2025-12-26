@@ -302,7 +302,7 @@ class BlogSystem {
         this.posts = [];
         this.configManager = configManager;
         this.markdownParser = new MarkdownParser(configManager);
-        this.apiEndpoint = '/api/blog-files';
+        this.apiEndpoint = '/api-static/blog-files.json';
         this.selectedCategories = new Set(); // tech, non-tech
         this.selectedTags = new Set(); // individual tags
         this.allTags = new Map(); // Map<tag, Set<category>> to track which category has which tags
@@ -796,7 +796,7 @@ class ProjectSystem {
         this.projects = [];
         this.configManager = configManager;
         this.markdownParser = new MarkdownParser(configManager);
-        this.apiEndpoint = '/api/project-files';
+        this.apiEndpoint = '/api-static/project-files.json';
     }
 
     /**
@@ -998,7 +998,7 @@ class ProjectSystem {
         const sortedTags = Array.from(allTags).sort();
 
         // Create tag filter buttons
-        tagFiltersContainer.innerHTML = sortedTags.map(tag => 
+        tagFiltersContainer.innerHTML = sortedTags.map(tag =>
             `<button class="tag-filter-btn" data-tag="${tag}">${tag}</button>`
         ).join('');
 
@@ -1007,7 +1007,7 @@ class ProjectSystem {
         tagButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const tag = button.dataset.tag;
-                
+
                 if (this.selectedTags.has(tag)) {
                     this.selectedTags.delete(tag);
                     button.classList.remove('active');
@@ -1062,7 +1062,7 @@ class ProjectSystem {
         if (countElement) {
             const totalCount = this.projects.length;
             const filteredCount = filteredProjects.length;
-            
+
             if (this.selectedTags.size > 0) {
                 countElement.textContent = `Showing ${filteredCount} of ${totalCount} projects`;
             } else {
@@ -1239,7 +1239,7 @@ class HomeSystem {
         this.homeData = null;
         this.configManager = configManager;
         this.markdownParser = new MarkdownParser(configManager);
-        this.apiEndpoint = '/api/home';
+        this.apiEndpoint = '/api-static/home.json';
     }
 
     async fetchHomeContent() {
@@ -1378,7 +1378,7 @@ class AboutSystem {
         this.aboutData = null;
         this.configManager = configManager;
         this.markdownParser = new MarkdownParser(configManager);
-        this.apiEndpoint = '/api/about';
+        this.apiEndpoint = '/api-static/about.json';
     }
 
     async fetchAboutContent() {
@@ -1542,8 +1542,8 @@ class ConfigManager {
         this.siteConfig = {};
         this.imageConfigLoaded = false;
         this.siteConfigLoaded = false;
-        this.imageApiEndpoint = '/api/config/images';
-        this.siteApiEndpoint = '/api/config/site';
+        this.imageApiEndpoint = '/api-static/config/images.json';
+        this.siteApiEndpoint = '/api-static/config/site.json';
     }
 
     async loadImageConfig() {
@@ -1781,8 +1781,8 @@ class NavigationManager {
         // Build navigation HTML
         const navHTML = enabledNavItems.map(item => {
             const isActive = currentPath.includes(item.url) ||
-                           (currentPath === '/' && item.url === 'index.html') ||
-                           (currentPath.endsWith('/') && item.url === 'index.html');
+                (currentPath === '/' && item.url === 'index.html') ||
+                (currentPath.endsWith('/') && item.url === 'index.html');
 
             return `<a href="${item.url}" class="nav-link ${isActive ? 'active' : ''}">${item.label}</a>`;
         }).join('');

@@ -1,0 +1,17 @@
+{
+    "name": "portfolio",
+    "version": "1.0.0",
+    "description": "Personal portfolio website",
+    "scripts": {
+        "build": "node generate-content.js",
+        "dev": "python server.py",
+        "prebuild": "node generate-content.js"
+    },
+    "keywords": [
+        "portfolio",
+        "blog",
+        "static-site"
+    ],
+    "author": "",
+    "license": "MIT"
+}
