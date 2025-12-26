@@ -8,12 +8,40 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/api/blog-files",
+      "dest": "/api/blog-files.py"
     },
     {
-      "src": "/(.*)",
+      "src": "/api/project-files",
+      "dest": "/api/project-files.py"
+    },
+    {
+      "src": "/api/home",
+      "dest": "/api/home.py"
+    },
+    {
+      "src": "/api/about",
+      "dest": "/api/about.py"
+    },
+    {
+      "src": "/api/config/images",
+      "dest": "/api/config/images.py"
+    },
+    {
+      "src": "/api/config/site",
+      "dest": "/api/config/site.py"
+    },
+    {
+      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|webp|md))",
       "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.html)?",
+      "dest": "/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
     }
   ]
 }

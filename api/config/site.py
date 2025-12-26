@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 from pathlib import Path
+import os
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -10,7 +11,8 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
 
         # Get site.md file
-        site_config_path = Path('config') / 'site.md'
+        base_path = Path(os.getcwd())
+        site_config_path = base_path / 'config' / 'site.md'
 
         if site_config_path.exists() and site_config_path.is_file():
             try:

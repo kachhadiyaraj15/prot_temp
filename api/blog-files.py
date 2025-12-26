@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 from pathlib import Path
+import os
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -11,7 +12,10 @@ class handler(BaseHTTPRequestHandler):
 
         # Get all .md files from blog directory
         blog_files = []
-        blog_path = Path('blog')
+        
+        # In Vercel, files are in the root of the deployment
+        base_path = Path(os.getcwd())
+        blog_path = base_path / 'blog'
 
         if blog_path.exists() and blog_path.is_dir():
             # Scan tech directory

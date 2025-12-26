@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 from pathlib import Path
+import os
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -10,7 +11,8 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
 
         # Get home.md file
-        home_path = Path('home') / 'home.md'
+        base_path = Path(os.getcwd())
+        home_path = base_path / 'home' / 'home.md'
 
         if home_path.exists() and home_path.is_file():
             try:

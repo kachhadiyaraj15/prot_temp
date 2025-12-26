@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 from pathlib import Path
+import os
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -11,7 +12,8 @@ class handler(BaseHTTPRequestHandler):
 
         # Get all .md files from projects directory
         project_files = []
-        projects_path = Path('projects')
+        base_path = Path(os.getcwd())
+        projects_path = base_path / 'projects'
 
         if projects_path.exists() and projects_path.is_dir():
             for file in projects_path.glob('*.md'):

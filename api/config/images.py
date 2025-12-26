@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 from pathlib import Path
+import os
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -10,7 +11,8 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
 
         # Get images.md file
-        images_config_path = Path('config') / 'images.md'
+        base_path = Path(os.getcwd())
+        images_config_path = base_path / 'config' / 'images.md'
 
         if images_config_path.exists() and images_config_path.is_file():
             try:
