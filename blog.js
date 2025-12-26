@@ -1847,33 +1847,36 @@ class App {
     }
 
     initializeCurrentPage() {
-        const path = window.location.pathname;
-        const href = window.location.href;
+        const path = window.location.pathname.toLowerCase();
 
-        // Robust path matching for all deployment environments
-        if (path.includes('blog.html') || href.includes('blog.html')) {
+        // Helper to check if we are on a specific page
+        const isPage = (name) => path.includes(`/${name}.html`) || path.endsWith(`/${name}`) || path === `/${name}`;
+
+        if (isPage('blog')) {
             if (this.configManager.isFeatureEnabled('blog_filters')) {
                 const filterPanel = new FilterPanel();
                 filterPanel.init();
             } else {
                 const filterToggle = document.getElementById('filter-toggle-btn');
-                if (filterToggle) {
-                    filterToggle.style.display = 'none';
-                }
+                if (filterToggle) filterToggle.style.display = 'none';
             }
             this.blogSystem.loadBlogList();
-        } else if (path.includes('blog-post.html') || href.includes('blog-post.html')) {
+        } else if (isPage('blog-post')) {
             this.blogSystem.loadBlogPost();
-        } else if (path.includes('projects.html') || href.includes('projects.html')) {
+        } else if (isPage('projects')) {
             this.projectSystem.loadProjectsList();
-        } else if (path.includes('project-detail.html') || href.includes('project-detail.html')) {
+        } else if (isPage('project-detail')) {
             this.projectSystem.loadProjectDetail();
-        } else if (path.includes('about.html') || href.includes('about.html')) {
+        } else if (isPage('about')) {
             this.aboutSystem.loadAboutPage();
-        } else if (path.includes('index.html') || path.endsWith('/') || path === '' || href.includes('index.html')) {
+        } else if (path.includes('index.html') || path.endsWith('/') || path === '') {
             this.homeSystem.loadHomePage();
         } else {
-            this.homeSystem.loadHomePage();
+            // Fallback: Check if the path contains the name anywhere as a last resort
+            if (path.includes('about')) this.aboutSystem.loadAboutPage();
+            else if (path.includes('project')) this.projectSystem.loadProjectsList();
+            else if (path.includes('blog')) this.blogSystem.loadBlogList();
+            else this.homeSystem.loadHomePage();
         }
     }
 }
