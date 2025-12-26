@@ -9,6 +9,9 @@
 const fs = require('fs');
 const path = require('path');
 
+// Configuration Constants
+const EXCERPT_LENGTH = 160;
+
 // Configuration
 const BLOG_DIR = 'blog';
 const PROJECTS_DIR = 'projects';
@@ -136,7 +139,7 @@ function generateBlogFiles() {
                 id,
                 file: `blog/${fileInfo.file}`,
                 ...metadata,
-                excerpt: metadata.excerpt || (content.split('---').slice(2).join('---').trim().slice(0, 160) + '...')
+                excerpt: metadata.excerpt || (content.split('---').slice(2).join('---').trim().slice(0, EXCERPT_LENGTH) + '...')
             });
         }
     }

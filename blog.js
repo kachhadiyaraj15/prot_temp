@@ -1,4 +1,14 @@
 // ===========================
+// Configuration Constants
+// ===========================
+
+const CONFIG = {
+    EXCERPT_LENGTH: 160,
+    DEFAULT_READING_TIME: '5 min read',
+    DEFAULT_CATEGORY: 'general'
+};
+
+// ===========================
 // Theme Management Module
 // ===========================
 
@@ -335,7 +345,7 @@ class BlogSystem {
 
         this.posts = blogFiles.map(post => {
             // Collect tags for filtering
-            if (post.tags && post.tags.length > 0) {
+            if (Array.isArray(post.tags) && post.tags.length > 0) {
                 post.tags.forEach(tag => {
                     if (!this.allTags.has(tag)) {
                         this.allTags.set(tag, new Set());
@@ -531,7 +541,7 @@ class BlogSystem {
         // Filter by tags (if any selected) - show posts with ANY of the selected tags
         if (this.selectedTags.size > 0) {
             filtered = filtered.filter(post =>
-                post.tags.some(tag => this.selectedTags.has(tag))
+                Array.isArray(post.tags) && post.tags.some(tag => this.selectedTags.has(tag))
             );
         }
 
@@ -572,35 +582,44 @@ class BlogSystem {
     }
 
     createBlogCard(post) {
-        const card = document.createElement('article');
-        card.className = 'blog-card';
-        card.onclick = () => window.location.href = `blog-post.html?id=${post.id}`;
+        try {
+            const card = document.createElement('article');
+            card.className = 'blog-card';
+            card.onclick = () => window.location.href = `blog-post.html?id=${post.id}`;
 
-        // Category badge
-        const categoryBadge = this.getCategoryBadge(post.category);
+            // Category badge
+            const categoryBadge = this.getCategoryBadge(post.category);
 
-        card.innerHTML = `
-            <div class="blog-card-header">
-                ${categoryBadge}
-                <h2 class="blog-card-title">
-                    <a href="blog-post.html?id=${post.id}">${post.title}</a>
-                </h2>
-                <div class="blog-card-meta">
-                    <span class="blog-card-date">
-                        📅 ${this.formatDate(post.date)}
-                    </span>
-                    <span class="blog-card-reading-time">
-                        ⏱️ ${post.readingTime}
-                    </span>
+            card.innerHTML = `
+                <div class="blog-card-header">
+                    ${categoryBadge}
+                    <h2 class="blog-card-title">
+                        <a href="blog-post.html?id=${post.id}">${post.title}</a>
+                    </h2>
+                    <div class="blog-card-meta">
+                        <span class="blog-card-date">
+                            📅 ${this.formatDate(post.date)}
+                        </span>
+                        <span class="blog-card-reading-time">
+                            ⏱️ ${post.readingTime || CONFIG.DEFAULT_READING_TIME}
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <p class="blog-card-excerpt">${post.excerpt}</p>
-            <div class="blog-card-tags">
-                ${Array.isArray(post.tags) ? post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('') : ''}
-            </div>
-        `;
+                <p class="blog-card-excerpt">${post.excerpt || ''}</p>
+                <div class="blog-card-tags">
+                    ${Array.isArray(post.tags) ? post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('') : ''}
+                </div>
+            `;
 
-        return card;
+            return card;
+        } catch (error) {
+            console.error('Error creating blog card:', error);
+            // Return empty card on error
+            const errorCard = document.createElement('article');
+            errorCard.className = 'blog-card';
+            errorCard.innerHTML = '<p style="color: var(--text-secondary);">Error loading post</p>';
+            return errorCard;
+        }
     }
 
     getCategoryBadge(category) {
@@ -1026,44 +1045,53 @@ class ProjectSystem {
     }
 
     createProjectCard(project) {
-        const card = document.createElement('article');
-        card.className = 'project-card';
+        try {
+            const card = document.createElement('article');
+            card.className = 'project-card';
 
-        // Create links HTML
-        let linksHTML = '<div class="project-links">';
-        if (project.githubUrl) {
-            linksHTML += `<a href="${project.githubUrl}" class="project-link" target="_blank" rel="noopener noreferrer">GitHub</a>`;
+            // Create links HTML
+            let linksHTML = '<div class="project-links">';
+            if (project.githubUrl) {
+                linksHTML += `<a href="${project.githubUrl}" class="project-link" target="_blank" rel="noopener noreferrer">GitHub</a>`;
+            }
+            if (project.liveUrl) {
+                linksHTML += `<a href="${project.liveUrl}" class="project-link" target="_blank" rel="noopener noreferrer">Live Demo</a>`;
+            }
+            if (project.demoUrl) {
+                linksHTML += `<a href="${project.demoUrl}" class="project-link" target="_blank" rel="noopener noreferrer">Demo</a>`;
+            }
+            // Always add "View Details" link
+            linksHTML += `<a href="project-detail.html?id=${project.id}" class="project-link">View Details</a>`;
+            linksHTML += '</div>';
+
+            // Create technologies tags
+            const techArray = Array.isArray(project.technologies) ? project.technologies : [];
+            const techHTML = techArray.length > 0
+                ? `<div class="project-tech">${techArray.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}</div>`
+                : '';
+
+            // Replace image placeholders with actual URLs
+            const imageUrl = project.image ? this.configManager.replaceVariables(project.image) : null;
+
+            card.innerHTML = `
+                ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" class="project-image" onerror="this.style.display='none'">` : ''}
+                <div class="project-content">
+                    <h3 class="project-title">${project.title}</h3>
+                    <p class="project-description">${project.description || ''}</p>
+                    ${techHTML}
+                    ${linksHTML}
+                </div>
+            `;
+
+            return card;
+        } catch (error) {
+            console.error('Error creating project card:', error);
+            // Return error card on failure
+            const errorCard = document.createElement('article');
+            errorCard.className = 'project-card';
+            errorCard.innerHTML = '<p style="color: var(--text-secondary);">Error loading project</p>';
+            return errorCard;
         }
-        if (project.liveUrl) {
-            linksHTML += `<a href="${project.liveUrl}" class="project-link" target="_blank" rel="noopener noreferrer">Live Demo</a>`;
-        }
-        if (project.demoUrl) {
-            linksHTML += `<a href="${project.demoUrl}" class="project-link" target="_blank" rel="noopener noreferrer">Demo</a>`;
-        }
-        // Always add "View Details" link
-        linksHTML += `<a href="project-detail.html?id=${project.id}" class="project-link">View Details</a>`;
-        linksHTML += '</div>';
-
-        // Create technologies tags
-        const techArray = Array.isArray(project.technologies) ? project.technologies : [];
-        const techHTML = techArray.length > 0
-            ? `<div class="project-tech">${techArray.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}</div>`
-            : '';
-
-        // Replace image placeholders with actual URLs
-        const imageUrl = project.image ? this.configManager.replaceVariables(project.image) : null;
-
-        card.innerHTML = `
-            ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" class="project-image">` : ''}
-            <div class="project-content">
-                <h3 class="project-title">${project.title}</h3>
-                <p class="project-description">${project.description}</p>
-                ${techHTML}
-                ${linksHTML}
-            </div>
-        `;
-
-        return card;
     }
 
     async loadProjectDetail() {
