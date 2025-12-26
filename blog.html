@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Your Name</title>
+    <meta name="description" content="Technical blog and articles">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.0/dist/mono.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="blog.html" class="nav-link active">Blog</a>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="about.html" class="nav-link">About</a>
+            </nav>
+            <button id="theme-toggle" class="theme-toggle">
+                <span class="theme-icon">☀️</span>
+                <span>Theme</span>
+            </button>
+        </header>
+
+        <main class="main-content">
+            <section class="hero">
+                <div class="hero-header">
+                    <div>
+                        <h1 class="hero-title">Blog</h1>
+                        <p class="hero-subtitle">Thoughts on technology, engineering, and more</p>
+                    </div>
+                    <button id="filter-toggle-btn" class="filter-toggle-btn">
+                        <svg class="filter-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="4" y1="6" x2="20" y2="6"></line>
+                            <line x1="4" y1="12" x2="20" y2="12"></line>
+                            <line x1="4" y1="18" x2="20" y2="18"></line>
+                        </svg>
+                        <span>Filters</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Filter Panel (Right Side Drawer) -->
+            <aside id="filter-panel" class="filter-panel">
+                <div class="filter-panel-header">
+                    <h2 class="filter-panel-title">Filters</h2>
+                    <button id="filter-close-btn" class="filter-close-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="filter-panel-content">
+                    <!-- Primary Category Filters -->
+                    <div class="filter-group">
+                        <h3 class="filter-title">Category:</h3>
+                        <div class="category-filters">
+                            <label class="category-filter-label">
+                                <input type="checkbox" class="category-filter" data-category="tech">
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-label">Tech</span>
+                            </label>
+                            <label class="category-filter-label">
+                                <input type="checkbox" class="category-filter" data-category="non-tech">
+                                <span class="checkbox-custom"></span>
+                                <span class="checkbox-label">Non-Tech</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tag Filters -->
+                    <div class="filter-group">
+                        <div class="filter-header">
+                            <h3 class="filter-title">Filter by Tags:</h3>
+                            <button id="clear-tags-btn" class="clear-btn">Clear All</button>
+                        </div>
+                        <div id="tag-filters" class="tag-filters">
+                            <!-- Tags will be dynamically loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Overlay for mobile -->
+            <div id="filter-overlay" class="filter-overlay"></div>
+
+            <!-- Posts Count -->
+            <div class="posts-count-section">
+                <p id="posts-count" class="posts-count">Loading posts...</p>
+            </div>
+
+            <!-- Blog Posts Grid -->
+            <div id="blog-list" class="blog-grid">
+                <!-- Blog posts will be dynamically loaded here -->
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Your Name. Built with ❤️ and vanilla HTML/CSS/JS</p>
+        </footer>
+    </div>
+
+    <script src="blog.js"></script>
+</body>
+
+</html>

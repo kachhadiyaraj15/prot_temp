@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Your Name</title>
+    <meta name="description" content="About me and my work">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.0/dist/mono.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="about.html" class="nav-link active">About</a>
+            </nav>
+            <button id="theme-toggle" class="theme-toggle">
+                <span class="theme-icon">☀️</span>
+                <span>Theme</span>
+            </button>
+        </header>
+
+        <main class="main-content">
+            <div id="about-content-container">
+                <!-- About content will be loaded dynamically -->
+                <div style="text-align: center; padding: var(--spacing-xl);">
+                    <p style="color: var(--text-secondary);">Loading about page...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Your Name. Built with ❤️ and vanilla HTML/CSS/JS</p>
+        </footer>
+    </div>
+
+    <script src="blog.js"></script>
+</body>
+
+</html>

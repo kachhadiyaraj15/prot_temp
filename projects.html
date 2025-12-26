@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Your Name</title>
+    <meta name="description" content="Portfolio of projects and work">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.0/dist/mono.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="projects.html" class="nav-link active">Projects</a>
+                <a href="about.html" class="nav-link">About</a>
+            </nav>
+            <button id="theme-toggle" class="theme-toggle">
+                <span class="theme-icon">☀️</span>
+                <span>Theme</span>
+            </button>
+        </header>
+
+        <main class="main-content">
+            <section class="hero">
+                <div class="hero-header">
+                    <div>
+                        <h1 class="hero-title">Projects</h1>
+                        <p class="hero-subtitle">Things I've built and contributed to</p>
+                    </div>
+                    <button id="project-filter-toggle-btn" class="filter-toggle-btn">
+                        <span class="filter-icon">⚙️</span>
+                        <span>Filter</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Projects Count -->
+            <div class="posts-count-section">
+                <p id="projects-count" class="posts-count"></p>
+            </div>
+
+            <div id="projects-grid" class="projects-grid">
+                <!-- Projects will be loaded here dynamically -->
+            </div>
+        </main>
+
+        <!-- Filter Panel (Slide-in from right) -->
+        <div id="project-filter-overlay" class="filter-overlay"></div>
+        <aside id="project-filter-panel" class="filter-panel">
+            <div class="filter-panel-header">
+                <h2 class="filter-panel-title">Filter Projects</h2>
+                <button id="project-filter-close-btn" class="filter-close-btn" aria-label="Close filters">
+                    <span style="font-size: 1.5rem;">×</span>
+                </button>
+            </div>
+            <div class="filter-panel-content">
+                <!-- Tag Filters -->
+                <div class="filter-group">
+                    <div class="filter-header">
+                        <h3 class="filter-title">Technologies</h3>
+                        <button id="clear-project-tags-btn" class="clear-btn">Clear</button>
+                    </div>
+                    <div id="project-tag-filters" class="tag-filters">
+                        <!-- Tag buttons will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <footer class="footer">
+            <p>&copy; 2025 Your Name. Built with ❤️ and vanilla HTML/CSS/JS</p>
+        </footer>
+    </div>
+
+    <script src="blog.js"></script>
+</body>
+
+</html>
