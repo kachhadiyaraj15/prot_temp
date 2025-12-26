@@ -6,7 +6,13 @@
       "title": "Awesome Web Application",
       "description": "A modern web application built with React and Node.js that helps users manage their daily tasks efficiently with real-time sync.",
       "image": "{{PROJECT1_IMAGE}}",
-      "technologies": "[React, Node.js, MongoDB, Express, Socket.io]",
+      "technologies": [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Express",
+        "Socket.io"
+      ],
       "githubUrl": "https://github.com/yourusername/awesome-web-app",
       "liveUrl": "https://awesome-web-app.demo.com",
       "published": true,
@@ -19,7 +25,14 @@
       "title": "Machine Learning Platform",
       "description": "An end-to-end ML platform for training, deploying, and monitoring machine learning models at scale.",
       "image": "{{PROJECT2_IMAGE}}",
-      "technologies": "[Python, TensorFlow, Docker, Kubernetes, FastAPI, PostgreSQL]",
+      "technologies": [
+        "Python",
+        "TensorFlow",
+        "Docker",
+        "Kubernetes",
+        "FastAPI",
+        "PostgreSQL"
+      ],
       "githubUrl": "https://github.com/yourusername/ml-platform",
       "demoUrl": "https://ml-platform-demo.com",
       "published": true,
@@ -32,7 +45,13 @@
       "title": "FitTrack - Mobile Fitness App",
       "description": "A cross-platform mobile app that helps users track workouts, nutrition, and achieve their fitness goals with AI-powered recommendations.",
       "image": "{{PROJECT3_IMAGE}}",
-      "technologies": "[React Native, Firebase, TensorFlow Lite, Node.js, GraphQL]",
+      "technologies": [
+        "React Native",
+        "Firebase",
+        "TensorFlow Lite",
+        "Node.js",
+        "GraphQL"
+      ],
       "githubUrl": "https://github.com/yourusername/fittrack",
       "liveUrl": "https://fittrack.app",
       "published": true,
@@ -41,5 +60,5 @@
     }
   ],
   "count": 3,
-  "generated": "2025-12-26T06:23:51.160Z"
+  "generated": "2025-12-26T09:29:32.863Z"
 }

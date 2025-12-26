@@ -95,8 +95,12 @@ function parseFrontmatter(content) {
         const key = line.substring(0, colonIndex).trim();
         let value = line.substring(colonIndex + 1).trim();
 
+        // Parse arrays [item1, item2]
+        if (value.startsWith('[') && value.endsWith(']')) {
+            value = value.slice(1, -1).split(',').map(item => item.trim());
+        }
         // Parse booleans
-        if (value.toLowerCase() === 'true') value = true;
+        else if (value.toLowerCase() === 'true') value = true;
         else if (value.toLowerCase() === 'false') value = false;
         // Parse numbers
         else if (!isNaN(value) && value !== '') value = Number(value);
@@ -128,9 +132,9 @@ function generateBlogFiles() {
             const id = filenameParts[filenameParts.length - 1].replace('.md', '');
 
             enrichedFiles.push({
+                ...fileInfo,
                 id,
                 file: `blog/${fileInfo.file}`,
-                ...fileInfo,
                 ...metadata,
                 excerpt: metadata.excerpt || (content.split('---').slice(2).join('---').trim().slice(0, 160) + '...')
             });

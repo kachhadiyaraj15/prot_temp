@@ -596,7 +596,7 @@ class BlogSystem {
             </div>
             <p class="blog-card-excerpt">${post.excerpt}</p>
             <div class="blog-card-tags">
-                ${post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
+                ${Array.isArray(post.tags) ? post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('') : ''}
             </div>
         `;
 
@@ -1045,12 +1045,16 @@ class ProjectSystem {
         linksHTML += '</div>';
 
         // Create technologies tags
-        const techHTML = project.technologies.length > 0
-            ? `<div class="project-tech">${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}</div>`
+        const techArray = Array.isArray(project.technologies) ? project.technologies : [];
+        const techHTML = techArray.length > 0
+            ? `<div class="project-tech">${techArray.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}</div>`
             : '';
 
+        // Replace image placeholders with actual URLs
+        const imageUrl = project.image ? this.configManager.replaceVariables(project.image) : null;
+
         card.innerHTML = `
-            ${project.image ? `<img src="${project.image}" alt="${project.title}" class="project-image">` : ''}
+            ${imageUrl ? `<img src="${imageUrl}" alt="${project.title}" class="project-image">` : ''}
             <div class="project-content">
                 <h3 class="project-title">${project.title}</h3>
                 <p class="project-description">${project.description}</p>
@@ -1140,7 +1144,7 @@ class ProjectSystem {
         container.innerHTML = `
             <article class="project-detail">
                 <header class="project-detail-header">
-                    ${project.image ? `<img src="${project.image}" alt="${project.title}" class="project-detail-image">` : ''}
+                    ${project.image ? `<img src="${this.configManager.replaceVariables(project.image)}" alt="${project.title}" class="project-detail-image">` : ''}
                     <h1 class="project-detail-title">${project.title}</h1>
                     <p class="project-detail-description">${project.description}</p>
                     ${linksHTML}
