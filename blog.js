@@ -319,11 +319,9 @@ class BlogSystem {
                 throw new Error('Failed to fetch blog files');
             }
             const data = await response.json();
-            console.log(`🔍 Auto-discovered ${data.count} blog files:`, data.files);
             return data.files;
         } catch (error) {
-            console.error('❌ Error fetching blog files:', error);
-            console.log('⚠️ Make sure you\'re running the server with: python3 server.py');
+            console.error('Error fetching blog files:', error);
             return [];
         }
     }
@@ -334,7 +332,7 @@ class BlogSystem {
         // Fetch blog files from API (auto-discovery)
         const blogFiles = await this.fetchBlogFiles();
 
-        console.log('🔍 Loading blog posts from files:', blogFiles);
+
 
         for (const fileInfo of blogFiles) {
             try {
@@ -347,12 +345,7 @@ class BlogSystem {
 
                 const post = this.parseFrontmatter(content, filename, category);
 
-                console.log(`📄 Parsed ${filename}:`, {
-                    title: post?.title,
-                    category: post?.category,
-                    published: post?.published,
-                    included: post && post.published
-                });
+
 
                 // Only include published posts
                 if (post && post.published) {
@@ -369,12 +362,11 @@ class BlogSystem {
                     }
                 }
             } catch (error) {
-                console.error(`❌ Error loading ${fileInfo}:`, error);
+                console.error('Error loading file:', error);
             }
         }
 
-        console.log(`✅ Total posts loaded: ${loadedPosts.length}`, loadedPosts.map(p => p.title));
-        console.log(`📊 Tags collected:`, Array.from(this.allTags.keys()));
+
 
         this.posts = loadedPosts;
         return this.posts;
@@ -810,11 +802,9 @@ class ProjectSystem {
                 throw new Error('Failed to fetch project files');
             }
             const data = await response.json();
-            console.log(`🔍 Auto-discovered ${data.count} project files:`, data.files);
             return data.files;
         } catch (error) {
-            console.error('❌ Error fetching project files:', error);
-            console.log('⚠️ Make sure you\'re running the server with: python3 server.py');
+            console.error('Error fetching project files:', error);
             return [];
         }
     }
@@ -825,7 +815,7 @@ class ProjectSystem {
         // Fetch project files from API (auto-discovery)
         const projectFiles = await this.fetchProjectFiles();
 
-        console.log('🔍 Loading projects from files:', projectFiles);
+
 
         for (const filename of projectFiles) {
             try {
@@ -834,22 +824,18 @@ class ProjectSystem {
 
                 const project = this.parseFrontmatter(content, filename);
 
-                console.log(`📄 Parsed ${filename}:`, {
-                    title: project?.title,
-                    published: project?.published,
-                    included: project && project.published
-                });
+
 
                 // Only include published projects
                 if (project && project.published) {
                     loadedProjects.push(project);
                 }
             } catch (error) {
-                console.error(`❌ Error loading ${filename}:`, error);
+                console.error('Error loading project:', error);
             }
         }
 
-        console.log(`✅ Total projects loaded: ${loadedProjects.length}`, loadedProjects.map(p => p.title));
+
 
         this.projects = loadedProjects;
         return this.projects;
@@ -1249,10 +1235,10 @@ class HomeSystem {
                 throw new Error('Failed to fetch home content');
             }
             const data = await response.json();
-            console.log('🏠 Home content fetched:', data.exists);
+
             return data;
         } catch (error) {
-            console.error('❌ Error fetching home content:', error);
+            console.error('Error fetching home content:', error);
             return { content: '', exists: false };
         }
     }
@@ -1388,10 +1374,10 @@ class AboutSystem {
                 throw new Error('Failed to fetch about content');
             }
             const data = await response.json();
-            console.log('📄 About content fetched:', data.exists);
+
             return data;
         } catch (error) {
-            console.error('❌ Error fetching about content:', error);
+            console.error('Error fetching about content:', error);
             return { content: '', exists: false };
         }
     }
@@ -1561,10 +1547,10 @@ class ConfigManager {
             if (data.exists && data.variables) {
                 this.imageVariables = data.variables;
                 this.imageConfigLoaded = true;
-                console.log('📸 Image configuration loaded:', Object.keys(this.imageVariables).length, 'variables');
+
             }
         } catch (error) {
-            console.error('❌ Error loading image configuration:', error);
+            console.error('Error loading image configuration:', error);
         }
 
         return this.imageVariables;
@@ -1585,10 +1571,10 @@ class ConfigManager {
             if (data.exists && data.config) {
                 this.siteConfig = data.config;
                 this.siteConfigLoaded = true;
-                console.log('⚙️  Site configuration loaded');
+
             }
         } catch (error) {
-            console.error('❌ Error loading site configuration:', error);
+            console.error('Error loading site configuration:', error);
         }
 
         return this.siteConfig;
@@ -1790,7 +1776,7 @@ class NavigationManager {
         // Update navigation
         this.navigationContainer.innerHTML = navHTML;
 
-        console.log('✅ Dynamic navigation rendered:', enabledNavItems.length, 'items');
+
     }
 
     /**
@@ -1864,18 +1850,12 @@ class App {
         const path = window.location.pathname;
         const href = window.location.href;
 
-        console.log('🔍 Current path:', path);
-        console.log('🔍 Current href:', href);
-
-        // More robust path matching
+        // Robust path matching for all deployment environments
         if (path.includes('blog.html') || href.includes('blog.html')) {
-            console.log('📝 Loading blog page...');
-            // Initialize filter panel for blog page (if feature enabled)
             if (this.configManager.isFeatureEnabled('blog_filters')) {
                 const filterPanel = new FilterPanel();
                 filterPanel.init();
             } else {
-                // Hide filter toggle button if filters are disabled
                 const filterToggle = document.getElementById('filter-toggle-btn');
                 if (filterToggle) {
                     filterToggle.style.display = 'none';
@@ -1883,22 +1863,16 @@ class App {
             }
             this.blogSystem.loadBlogList();
         } else if (path.includes('blog-post.html') || href.includes('blog-post.html')) {
-            console.log('📄 Loading blog post...');
             this.blogSystem.loadBlogPost();
         } else if (path.includes('projects.html') || href.includes('projects.html')) {
-            console.log('🚀 Loading projects page...');
             this.projectSystem.loadProjectsList();
         } else if (path.includes('project-detail.html') || href.includes('project-detail.html')) {
-            console.log('📋 Loading project detail...');
             this.projectSystem.loadProjectDetail();
         } else if (path.includes('about.html') || href.includes('about.html')) {
-            console.log('👤 Loading about page...');
             this.aboutSystem.loadAboutPage();
         } else if (path.includes('index.html') || path.endsWith('/') || path === '' || href.includes('index.html')) {
-            console.log('🏠 Loading home page...');
             this.homeSystem.loadHomePage();
         } else {
-            console.log('❓ Unknown page, trying home...');
             this.homeSystem.loadHomePage();
         }
     }
