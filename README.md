@@ -4,14 +4,28 @@ A clean, universal static portfolio that works on any hosting platform.
 
 ## 🚀 Quick Deploy
 
-### Cloudflare Pages / Netlify / Vercel
+### Cloudflare Pages (Recommended)
 1. Push to GitHub
-2. Connect repository on your chosen platform
+2. Go to [pages.cloudflare.com](https://pages.cloudflare.com)
+3. Connect your repository
+4. **Build settings:**
+   - Build command: `npm run build`
+   - Build output directory: `.` (just a dot)
+5. Deploy!
+
+**Note:** If build fails, try:
+- Build command: (leave empty)
+- Output directory: `.`
+- The `api-static/` folder is already pre-built and committed!
+
+### Vercel / Netlify
+1. Push to GitHub
+2. Connect repository
 3. Build command: `npm run build`
 4. Deploy!
 
 ### GitHub Pages
-Add workflow file `.github/workflows/deploy.yml`:
+Add `.github/workflows/deploy.yml`:
 ```yaml
 name: Deploy
 on:
@@ -37,14 +51,15 @@ jobs:
 - `styles.css` - Styling
 - `generate-content.js` - Build script
 - `blog/`, `projects/`, `home/`, `about/` - Your content
-- `api-static/` - Auto-generated on build
+- `api-static/` - Auto-generated JSON (already built)
 
 ## ✏️ Add Content
 
 1. Add markdown files to `blog/tech/` or `blog/non-tech/`
 2. Add projects to `projects/`
 3. Edit `home/home.md` and `about/about.md`
-4. Commit and push - auto-deploys!
+4. Run `npm run build` to regenerate JSON
+5. Commit and push - auto-deploys!
 
 ## 🔧 Local Development
 
@@ -62,3 +77,4 @@ python server.py
 ---
 
 **Universal static site - deploy anywhere, zero configuration needed.**
+
