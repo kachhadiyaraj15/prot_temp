@@ -1,13 +1,1 @@
-# Cloudflare Pages Configuration
-# Build command: npm run build
-# Build output directory: ./
-# Root directory: /
-
-[build]
-  command = "npm run build"
-  publish = "."
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+/* /index.html 200
