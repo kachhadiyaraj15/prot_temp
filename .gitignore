@@ -2,11 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-.Python
-env/
-venv/
-*.egg-info/
 
 # Node
 node_modules/
@@ -15,15 +10,11 @@ node_modules/
 .vscode/
 .idea/
 *.swp
-*.swo
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Temporary files
+# Logs
 *.log
-*.tmp
 
-# Keep api-static/ folder (it's generated but needed for deployment)
-# !api-static/

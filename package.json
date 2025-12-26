@@ -1,11 +1,10 @@
 {
     "name": "portfolio",
     "version": "1.0.0",
-    "description": "Personal portfolio website",
+    "description": "Personal portfolio website - works on any static hosting platform",
     "scripts": {
         "build": "node generate-content.js",
-        "dev": "python server.py",
-        "prebuild": "node generate-content.js"
+        "dev": "python server.py"
     },
     "keywords": [
         "portfolio",

@@ -111,7 +111,7 @@ function parseFrontmatter(content) {
  * Generate blog files list
  */
 function generateBlogFiles() {
-    console.log('📝 Generating blog files list...');
+    console.log('  📝 Blog posts...');
 
     const blogFiles = getMarkdownFiles(BLOG_DIR);
 
@@ -126,14 +126,14 @@ function generateBlogFiles() {
         JSON.stringify(output, null, 2)
     );
 
-    console.log(`✅ Found ${blogFiles.length} blog posts`);
+    console.log(`     ✓ Found ${blogFiles.length} posts`);
 }
 
 /**
  * Generate project files list
  */
 function generateProjectFiles() {
-    console.log('🚀 Generating project files list...');
+    console.log('  🚀 Projects...');
 
     const projectFiles = [];
 
@@ -159,14 +159,14 @@ function generateProjectFiles() {
         JSON.stringify(output, null, 2)
     );
 
-    console.log(`✅ Found ${projectFiles.length} projects`);
+    console.log(`     ✓ Found ${projectFiles.length} projects`);
 }
 
 /**
  * Generate home content
  */
 function generateHomeContent() {
-    console.log('🏠 Generating home content...');
+    console.log('  🏠 Home page...');
 
     const homePath = path.join(HOME_DIR, 'home.md');
     const content = fs.existsSync(homePath) ? readFileContent(homePath) : '';
@@ -182,14 +182,14 @@ function generateHomeContent() {
         JSON.stringify(output, null, 2)
     );
 
-    console.log(`✅ Home content ${output.exists ? 'generated' : 'not found'}`);
+    console.log(`     ✓ ${output.exists ? 'Generated' : 'Not found'}`);
 }
 
 /**
  * Generate about content
  */
 function generateAboutContent() {
-    console.log('👤 Generating about content...');
+    console.log('  👤 About page...');
 
     const aboutPath = path.join(ABOUT_DIR, 'about.md');
     const content = fs.existsSync(aboutPath) ? readFileContent(aboutPath) : '';
@@ -205,14 +205,14 @@ function generateAboutContent() {
         JSON.stringify(output, null, 2)
     );
 
-    console.log(`✅ About content ${output.exists ? 'generated' : 'not found'}`);
+    console.log(`     ✓ ${output.exists ? 'Generated' : 'Not found'}`);
 }
 
 /**
  * Generate image config
  */
 function generateImageConfig() {
-    console.log('🖼️  Generating image config...');
+    console.log('  🖼️  Config (images)...');
 
     const configPath = path.join(CONFIG_DIR, 'images.md');
     const content = fs.existsSync(configPath) ? readFileContent(configPath) : '';
@@ -235,14 +235,14 @@ function generateImageConfig() {
         JSON.stringify(output, null, 2)
     );
 
-    console.log(`✅ Image config ${output.exists ? 'generated' : 'not found'}`);
+    console.log(`     ✓ ${output.exists ? 'Generated' : 'Not found'}`);
 }
 
 /**
  * Generate site config
  */
 function generateSiteConfig() {
-    console.log('⚙️  Generating site config...');
+    console.log('  ⚙️  Config (site)...');
 
     const configPath = path.join(CONFIG_DIR, 'site.md');
     const content = fs.existsSync(configPath) ? readFileContent(configPath) : '';
@@ -264,15 +264,14 @@ function generateSiteConfig() {
         JSON.stringify(output, null, 2)
     );
 
-    console.log(`✅ Site config ${output.exists ? 'generated' : 'not found'}`);
+    console.log(`     ✓ ${output.exists ? 'Generated' : 'Not found'}`);
 }
 
 /**
  * Main execution
  */
 function main() {
-    console.log('\n🎨 Portfolio Static Site Generator\n');
-    console.log('='.repeat(50));
+    console.log('🔨 Building static content...\n');
 
     try {
         generateBlogFiles();
@@ -282,13 +281,10 @@ function main() {
         generateImageConfig();
         generateSiteConfig();
 
-        console.log('='.repeat(50));
-        console.log('\n✨ Static content generation complete!');
-        console.log(`📁 Output directory: ${OUTPUT_DIR}/\n`);
-        console.log('🚀 Your site is now ready for static deployment!\n');
+        console.log('\n✅ Build complete! Site ready for deployment.\n');
 
     } catch (error) {
-        console.error('\n❌ Error during generation:', error);
+        console.error('\n❌ Build failed:', error.message);
         process.exit(1);
     }
 }
