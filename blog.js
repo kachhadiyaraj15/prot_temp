@@ -1862,8 +1862,14 @@ class App {
 
     initializeCurrentPage() {
         const path = window.location.pathname;
+        const href = window.location.href;
 
-        if (path.includes('blog.html')) {
+        console.log('🔍 Current path:', path);
+        console.log('🔍 Current href:', href);
+
+        // More robust path matching
+        if (path.includes('blog.html') || href.includes('blog.html')) {
+            console.log('📝 Loading blog page...');
             // Initialize filter panel for blog page (if feature enabled)
             if (this.configManager.isFeatureEnabled('blog_filters')) {
                 const filterPanel = new FilterPanel();
@@ -1876,15 +1882,23 @@ class App {
                 }
             }
             this.blogSystem.loadBlogList();
-        } else if (path.includes('blog-post.html')) {
+        } else if (path.includes('blog-post.html') || href.includes('blog-post.html')) {
+            console.log('📄 Loading blog post...');
             this.blogSystem.loadBlogPost();
-        } else if (path.includes('projects.html')) {
+        } else if (path.includes('projects.html') || href.includes('projects.html')) {
+            console.log('🚀 Loading projects page...');
             this.projectSystem.loadProjectsList();
-        } else if (path.includes('project-detail.html')) {
+        } else if (path.includes('project-detail.html') || href.includes('project-detail.html')) {
+            console.log('📋 Loading project detail...');
             this.projectSystem.loadProjectDetail();
-        } else if (path.includes('about.html')) {
+        } else if (path.includes('about.html') || href.includes('about.html')) {
+            console.log('👤 Loading about page...');
             this.aboutSystem.loadAboutPage();
-        } else if (path.includes('index.html') || path.endsWith('/') || path === '') {
+        } else if (path.includes('index.html') || path.endsWith('/') || path === '' || href.includes('index.html')) {
+            console.log('🏠 Loading home page...');
+            this.homeSystem.loadHomePage();
+        } else {
+            console.log('❓ Unknown page, trying home...');
             this.homeSystem.loadHomePage();
         }
     }
