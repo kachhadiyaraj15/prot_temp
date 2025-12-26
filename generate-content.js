@@ -114,10 +114,35 @@ function generateBlogFiles() {
     console.log('  📝 Blog posts...');
 
     const blogFiles = getMarkdownFiles(BLOG_DIR);
+    const enrichedFiles = [];
+
+    for (const fileInfo of blogFiles) {
+        const filePath = path.join(BLOG_DIR, fileInfo.file);
+        const content = readFileContent(filePath);
+        const metadata = parseFrontmatter(content);
+
+        // Only include published posts
+        if (metadata.published !== false) {
+            // Extract id from filename
+            const filenameParts = fileInfo.file.split('/');
+            const id = filenameParts[filenameParts.length - 1].replace('.md', '');
+
+            enrichedFiles.push({
+                id,
+                file: `blog/${fileInfo.file}`,
+                ...fileInfo,
+                ...metadata,
+                excerpt: metadata.excerpt || (content.split('---').slice(2).join('---').trim().slice(0, 160) + '...')
+            });
+        }
+    }
+
+    // Sort by date newest first
+    enrichedFiles.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
     const output = {
-        files: blogFiles,
-        count: blogFiles.length,
+        files: enrichedFiles,
+        count: enrichedFiles.length,
         generated: new Date().toISOString()
     };
 
@@ -126,7 +151,7 @@ function generateBlogFiles() {
         JSON.stringify(output, null, 2)
     );
 
-    console.log(`     ✓ Found ${blogFiles.length} posts`);
+    console.log(`     ✓ Bundled ${enrichedFiles.length} posts`);
 }
 
 /**
@@ -135,22 +160,36 @@ function generateBlogFiles() {
 function generateProjectFiles() {
     console.log('  🚀 Projects...');
 
-    const projectFiles = [];
+    const enrichedProjects = [];
 
     if (fs.existsSync(PROJECTS_DIR)) {
         const items = fs.readdirSync(PROJECTS_DIR);
         for (const item of items) {
             if (item.endsWith('.md') && !item.startsWith('_')) {
-                projectFiles.push(item);
+                const filePath = path.join(PROJECTS_DIR, item);
+                const content = readFileContent(filePath);
+                const metadata = parseFrontmatter(content);
+
+                if (metadata.published !== false) {
+                    // Extract id from filename
+                    const id = item.replace('.md', '');
+
+                    enrichedProjects.push({
+                        id,
+                        file: item,
+                        ...metadata
+                    });
+                }
             }
         }
     }
 
-    projectFiles.sort();
+    // Sort projects
+    enrichedProjects.sort((a, b) => (b.order || 0) - (a.order || 0));
 
     const output = {
-        files: projectFiles,
-        count: projectFiles.length,
+        files: enrichedProjects,
+        count: enrichedProjects.length,
         generated: new Date().toISOString()
     };
 
@@ -159,7 +198,7 @@ function generateProjectFiles() {
         JSON.stringify(output, null, 2)
     );
 
-    console.log(`     ✓ Found ${projectFiles.length} projects`);
+    console.log(`     ✓ Bundled ${enrichedProjects.length} projects`);
 }
 
 /**

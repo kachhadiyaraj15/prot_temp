@@ -327,48 +327,25 @@ class BlogSystem {
     }
 
     async loadPostsFromFiles() {
-        const loadedPosts = [];
-
-        // Fetch blog files from API (auto-discovery)
+        // Fetch bundled blog data (pre-parsed during build)
         const blogFiles = await this.fetchBlogFiles();
 
+        // Reset tags
+        this.allTags.clear();
 
-
-        for (const fileInfo of blogFiles) {
-            try {
-                // fileInfo is now an object: {file: 'tech/post.md', category: 'tech'}
-                const filename = fileInfo.file || fileInfo; // backward compatibility
-                const category = fileInfo.category || 'general';
-
-                const response = await fetch(`blog/${filename}`);
-                const content = await response.text();
-
-                const post = this.parseFrontmatter(content, filename, category);
-
-
-
-                // Only include published posts
-                if (post && post.published) {
-                    loadedPosts.push(post);
-
-                    // Collect all tags for filtering
-                    if (post.tags && post.tags.length > 0) {
-                        post.tags.forEach(tag => {
-                            if (!this.allTags.has(tag)) {
-                                this.allTags.set(tag, new Set());
-                            }
-                            this.allTags.get(tag).add(post.category);
-                        });
+        this.posts = blogFiles.map(post => {
+            // Collect tags for filtering
+            if (post.tags && post.tags.length > 0) {
+                post.tags.forEach(tag => {
+                    if (!this.allTags.has(tag)) {
+                        this.allTags.set(tag, new Set());
                     }
-                }
-            } catch (error) {
-                console.error('Error loading file:', error);
+                    this.allTags.get(tag).add(post.category || 'general');
+                });
             }
-        }
+            return post;
+        });
 
-
-
-        this.posts = loadedPosts;
         return this.posts;
     }
 
@@ -656,9 +633,12 @@ class BlogSystem {
         this.updatePageMeta(post);
 
         try {
-            // Use the content from frontmatter parsing (already stripped of frontmatter)
-            const html = this.markdownParser.parse(post.content);
+            // Since listings only contain metadata now, fetch the full markdown content for the post
+            const response = await fetch(post.file);
+            const rawContent = await response.text();
+            const parsedPost = this.parseFrontmatter(rawContent, post.id, post.category);
 
+            const html = this.markdownParser.parse(parsedPost.content);
             this.renderBlogPost(post, html);
 
             // Generate TOC after content is rendered
@@ -810,34 +790,9 @@ class ProjectSystem {
     }
 
     async loadProjectsFromFiles() {
-        const loadedProjects = [];
-
-        // Fetch project files from API (auto-discovery)
-        const projectFiles = await this.fetchProjectFiles();
-
-
-
-        for (const filename of projectFiles) {
-            try {
-                const response = await fetch(`projects/${filename}`);
-                const content = await response.text();
-
-                const project = this.parseFrontmatter(content, filename);
-
-
-
-                // Only include published projects
-                if (project && project.published) {
-                    loadedProjects.push(project);
-                }
-            } catch (error) {
-                console.error('Error loading project:', error);
-            }
-        }
-
-
-
-        this.projects = loadedProjects;
+        // Fetch bundled projects data (pre-parsed during build)
+        const projectsData = await this.fetchProjectFiles();
+        this.projects = projectsData;
         return this.projects;
     }
 
@@ -1128,9 +1083,12 @@ class ProjectSystem {
         this.updatePageMeta(project);
 
         try {
-            // Use the content from frontmatter parsing (already stripped of frontmatter)
-            const html = this.markdownParser.parse(project.content);
+            // Since listings only contain metadata now, fetch the full markdown content for the project
+            const response = await fetch(`projects/${project.file}`);
+            const rawContent = await response.text();
+            const parsedProject = this.parseFrontmatter(rawContent, project.file);
 
+            const html = this.markdownParser.parse(parsedProject.content);
             this.renderProjectDetail(project, html);
 
         } catch (error) {
@@ -1884,3 +1842,4 @@ class App {
 // Initialize the application
 const app = new App();
 app.init();
+
